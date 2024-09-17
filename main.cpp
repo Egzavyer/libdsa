@@ -1,9 +1,9 @@
 #include <iostream>
-#include "include/array.h"
+#include "include/list.h"
 
 int main()
 {
-    Array<int> arr(1);
+    List<int> arr(1);
     arr.append(1);
     arr.append(2);
     arr.append(3);
@@ -15,5 +15,8 @@ int main()
     arr.print();
 
     arr.insert(1, 5);
+    arr.print();
+
+    arr.remove(1);
     arr.print();
 }

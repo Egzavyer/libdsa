@@ -1,5 +1,5 @@
-#ifndef ARRAY_H
-#define ARRAY_H
+#ifndef LIST_H
+#define LIST_H
 
 #include <cstddef>
 #include <stdexcept>
@@ -7,17 +7,17 @@
 #include <string>
 
 template <typename T>
-class Array
+class List
 {
 public:
-    Array(int initialCapacity = 1)
+    List(int initialCapacity = 1)
     {
         capacity = initialCapacity;
         size = 0;
         data = new T[capacity];
     }
 
-    ~Array()
+    ~List()
     {
         delete[] data;
     }
@@ -39,11 +39,14 @@ public:
 
     T &operator[](int index)
     {
-        if (index >= size || size == 0)
+        if (index < size && index > 0 && size > 0)
+        {
+            return data[index];
+        }
+        else
         {
             throw std::out_of_range("ERROR: IndexOutOfBounds");
         }
-        return data[index];
     }
 
     void append(const T &element)
@@ -62,6 +65,7 @@ public:
         {
             T temp = data[size - 1];
             data[size - 1].~T();
+            std::cerr << data[size - 1] << '\n';
             size--;
             if (capacity / 2 > size)
             {
@@ -71,22 +75,53 @@ public:
         }
         else
         {
-            throw std::out_of_range("ERROR: IndexOutOfBounds");
+            throw std::out_of_range("pop(): IndexOutOfBounds");
         }
     }
 
     void insert(int index, const T &element)
     {
-        if (size == capacity)
+        if (index < size && index > 0 && size > 0)
         {
-            resize(capacity * 2);
+
+            if (size == capacity)
+            {
+                resize(capacity * 2);
+            }
+            for (int i = size; i >= index; i--)
+            {
+                data[i + 1] = data[i];
+            }
+            data[index] = element;
+            size++;
         }
-        for (int i = size; i >= index; i--)
+        else
         {
-            data[i + 1] = data[i];
+            throw std::out_of_range("insert(): IndexOutOfBounds");
         }
-        data[index] = element;
-        size++;
+    }
+
+    void remove(int index)
+    {
+        if (index < size && index > 0 && size > 0)
+        {
+            data[index].~T();
+            for (int i = index; i < size - 1; i++)
+            {
+                T temp = data[i];
+                data[i] = data[i + 1];
+                data[i + 1] = temp;
+            }
+            size--;
+            if (capacity / 2 > size)
+            {
+                resize(capacity / 2);
+            }
+        }
+        else
+        {
+            throw std::out_of_range("remove(): IndexOutOfBounds ");
+        }
     }
 
     void print()
@@ -126,4 +161,4 @@ private:
     }
 };
 
-#endif // ARRAY_H
+#endif // LIST_H
