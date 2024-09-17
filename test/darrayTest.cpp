@@ -1,11 +1,11 @@
 #include <cassert>
 #include <iostream>
 
-#include "../include/list.h"
+#include "../include/darray.h"
 
 int main()
 {
-    List<int> arr;
+    DArray<int> arr;
     arr.append(1);
     arr.append(2);
     arr.append(3);

@@ -1,22 +1,20 @@
 #include <iostream>
-#include "include/list.h"
+#include "include/darray.h"
+#include "include/llist.h"
 
 int main()
 {
-    List<int> arr;
-    arr.append(1);
-    arr.append(2);
-    arr.append(3);
-    arr.append(4);
-    arr.print();
+    LList<int> l;
+    l.insertFront(1);
+    l.insertFront(2);
+    l.insertFront(3);
+    l.insertEnd(6);
+    l.print();
 
-    arr.pop();
-    arr.pop();
-    arr.print();
+    l.insertAt(2, 5);
+    l.print();
 
-    arr.insert(1, 5);
-    arr.print();
+    l.deleteEnd();
 
-    arr.remove(1);
-    arr.print();
+    l.print();
 }

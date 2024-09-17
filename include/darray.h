@@ -1,5 +1,5 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef DARRAY_H
+#define DARRAY_H
 
 #include <cstddef>
 #include <stdexcept>
@@ -7,15 +7,15 @@
 #include <string>
 
 template <typename T>
-class List
+class DArray
 {
 public:
-    List(int initialCapacity = 1) : capacity(initialCapacity), size(0)
+    DArray(int initialCapacity = 1) : capacity(initialCapacity), size(0)
     {
         data = new T[capacity];
     }
 
-    ~List()
+    ~DArray()
     {
         delete[] data;
     }
@@ -163,4 +163,4 @@ private:
     }
 };
 
-#endif // LIST_H
+#endif // DARRAY_H
