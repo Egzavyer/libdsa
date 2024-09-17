@@ -12,7 +12,6 @@ struct Node {
 
 template<typename T>
 class LList {
-private:
     Node<T> *head;
     int size;
 
@@ -45,7 +44,7 @@ public:
 
     void insertAt(const int index, T value) {
         if (index <= size && index >= 0) {
-            if (index <= 0) {
+            if (index == 0) {
                 insertFront(value);
             } else if (index == size) {
                 insertEnd(value);

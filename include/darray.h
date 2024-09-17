@@ -60,7 +60,7 @@ public:
     }
 
     void insert(int index, const T &element) {
-        if (index < size && index >= 0 && size > 0) {
+        if ((index < size || size == 0) && index >= 0) {
             if (size == capacity) {
                 resize(capacity * 2);
             }
@@ -74,7 +74,7 @@ public:
         }
     }
 
-    void remove(int index) {
+    void remove(const int index) {
         if (index < size && index >= 0 && size > 0) {
             for (int i = index; i < size - 1; i++) {
                 T temp = data[i];
@@ -109,7 +109,7 @@ private:
     size_t size;
     size_t capacity;
 
-    void resize(int newCapacity) {
+    void resize(const int newCapacity) {
         if (newCapacity > size) {
             T *temp = new T[newCapacity];
             for (int i = 0; i < size; i++) {
