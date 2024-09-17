@@ -10,10 +10,8 @@ template <typename T>
 class List
 {
 public:
-    List(int initialCapacity = 1)
+    List(int initialCapacity = 1) : capacity(initialCapacity), size(0)
     {
-        capacity = initialCapacity;
-        size = 0;
         data = new T[capacity];
     }
 
@@ -39,7 +37,7 @@ public:
 
     T &operator[](int index)
     {
-        if (index < size && index > 0 && size > 0)
+        if (index < size && index >= 0 && size > 0)
         {
             return data[index];
         }
@@ -47,6 +45,10 @@ public:
         {
             throw std::out_of_range("ERROR: IndexOutOfBounds");
         }
+    }
+
+    void clear()
+    {
     }
 
     void append(const T &element)
@@ -64,7 +66,6 @@ public:
         if (size > 0)
         {
             T temp = data[size - 1];
-            data[size - 1].~T();
             std::cerr << data[size - 1] << '\n';
             size--;
             if (capacity / 2 > size)
@@ -81,7 +82,7 @@ public:
 
     void insert(int index, const T &element)
     {
-        if (index < size && index > 0 && size > 0)
+        if (index < size && index >= 0 && size > 0)
         {
 
             if (size == capacity)
@@ -103,9 +104,8 @@ public:
 
     void remove(int index)
     {
-        if (index < size && index > 0 && size > 0)
+        if (index < size && index >= 0 && size > 0)
         {
-            data[index].~T();
             for (int i = index; i < size - 1; i++)
             {
                 T temp = data[i];
@@ -123,6 +123,10 @@ public:
             throw std::out_of_range("remove(): IndexOutOfBounds ");
         }
     }
+
+    void clear()
+    {
+        }
 
     void print()
     {
@@ -150,14 +154,21 @@ private:
 
     void resize(int newCapacity)
     {
-        T *temp = new T[newCapacity];
-        for (int i = 0; i < size; i++)
+        if (newCapacity > size)
         {
-            temp[i] = data[i];
+            T *temp = new T[newCapacity];
+            for (int i = 0; i < size; i++)
+            {
+                temp[i] = data[i];
+            }
+            delete[] data;
+            data = temp;
+            capacity = newCapacity;
         }
-        delete[] data;
-        data = temp;
-        capacity = newCapacity;
+        else
+        {
+            throw std::out_of_range("resize(): IndexOutOfBounds ");
+        }
     }
 };
 
