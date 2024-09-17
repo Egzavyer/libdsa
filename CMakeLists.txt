@@ -4,3 +4,4 @@ project(libdsa)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(libdsa main.cpp)
+add_subdirectory(test)
