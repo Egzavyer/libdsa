@@ -4,134 +4,100 @@
 #include <cstddef>
 #include <stdexcept>
 #include <iostream>
-#include <string>
 
-template <typename T>
-class DArray
-{
+template<typename T>
+class DArray {
 public:
-    DArray(int initialCapacity = 1) : capacity(initialCapacity), size(0)
-    {
+    explicit DArray(const int initialCapacity = 1) {
+        capacity = initialCapacity;
+        size = 0;
         data = new T[capacity];
     }
 
-    ~DArray()
-    {
+    ~DArray() {
         delete[] data;
     }
 
-    int getSize()
-    {
+    int getSize() const {
         return size;
     }
 
-    int getCapacity()
-    {
+    int getCapacity() const {
         return capacity;
     }
 
-    bool isEmpty()
-    {
+    bool isEmpty() const {
         return size == 0;
     }
 
-    T &operator[](int index)
-    {
-        if (index < size && index >= 0 && size > 0)
-        {
+    T &operator[](int index) {
+        if (index < size && index >= 0 && size > 0) {
             return data[index];
-        }
-        else
-        {
+        } else {
             throw std::out_of_range("ERROR: IndexOutOfBounds");
         }
     }
 
-    void append(const T &element)
-    {
-        if (size == capacity)
-        {
+    void append(const T &element) {
+        if (size == capacity) {
             resize(capacity * 2);
         }
         data[size] = element;
         size++;
     }
 
-    T pop()
-    {
-        if (size > 0)
-        {
+    T pop() {
+        if (size > 0) {
             T temp = data[size - 1];
             size--;
-            if (capacity / 2 > size)
-            {
+            if (capacity / 2 > size) {
                 resize(capacity / 2);
             }
             return temp;
-        }
-        else
-        {
+        } else {
             throw std::out_of_range("pop(): IndexOutOfBounds");
         }
     }
 
-    void insert(int index, const T &element)
-    {
-        if (index < size && index >= 0 && size > 0)
-        {
-
-            if (size == capacity)
-            {
+    void insert(int index, const T &element) {
+        if (index < size && index >= 0 && size > 0) {
+            if (size == capacity) {
                 resize(capacity * 2);
             }
-            for (int i = size; i >= index; i--)
-            {
+            for (int i = size; i >= index; i--) {
                 data[i + 1] = data[i];
             }
             data[index] = element;
             size++;
-        }
-        else
-        {
+        } else {
             throw std::out_of_range("insert(): IndexOutOfBounds");
         }
     }
 
-    void remove(int index)
-    {
-        if (index < size && index >= 0 && size > 0)
-        {
-            for (int i = index; i < size - 1; i++)
-            {
+    void remove(int index) {
+        if (index < size && index >= 0 && size > 0) {
+            for (int i = index; i < size - 1; i++) {
                 T temp = data[i];
                 data[i] = data[i + 1];
                 data[i + 1] = temp;
             }
             size--;
-            if (capacity / 2 > size)
-            {
+            if (capacity / 2 > size) {
                 resize(capacity / 2);
             }
-        }
-        else
-        {
+        } else {
             throw std::out_of_range("remove(): IndexOutOfBounds ");
         }
     }
 
-    void print()
-    {
+    void print() {
         std::cout << "Capacity: " << capacity << '\n';
         std::cout << "Size: " << size << '\n';
         std::cout << '[';
-        for (int i = 0; i < size; i++)
-        {
-            if (i == size - 1)
-            {
+        for (int i = 0; i < size; i++) {
+            if (i == size - 1) {
                 std::cout << data[i];
-            }
-            else
-            {
+            } else {
                 std::cout << data[i] << ',';
             }
         }
@@ -143,21 +109,16 @@ private:
     size_t size;
     size_t capacity;
 
-    void resize(int newCapacity)
-    {
-        if (newCapacity > size)
-        {
+    void resize(int newCapacity) {
+        if (newCapacity > size) {
             T *temp = new T[newCapacity];
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 temp[i] = data[i];
             }
             delete[] data;
             data = temp;
             capacity = newCapacity;
-        }
-        else
-        {
+        } else {
             throw std::out_of_range("resize(): IndexOutOfBounds ");
         }
     }

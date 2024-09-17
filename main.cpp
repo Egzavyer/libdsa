@@ -5,16 +5,11 @@
 int main()
 {
     LList<int> l;
-    l.insertFront(1);
-    l.insertFront(2);
-    l.insertFront(3);
-    l.insertEnd(6);
+    l.insertAt(0,1);
+    l.insertAt(1,2);
+    l.insertAt(1,3);
     l.print();
 
-    l.insertAt(2, 5);
-    l.print();
-
-    l.deleteEnd();
-
+    l.deleteAt(1);
     l.print();
 }
