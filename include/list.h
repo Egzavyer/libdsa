@@ -47,10 +47,6 @@ public:
         }
     }
 
-    void clear()
-    {
-    }
-
     void append(const T &element)
     {
         if (size == capacity)
@@ -66,7 +62,6 @@ public:
         if (size > 0)
         {
             T temp = data[size - 1];
-            std::cerr << data[size - 1] << '\n';
             size--;
             if (capacity / 2 > size)
             {
@@ -123,10 +118,6 @@ public:
             throw std::out_of_range("remove(): IndexOutOfBounds ");
         }
     }
-
-    void clear()
-    {
-        }
 
     void print()
     {

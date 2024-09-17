@@ -6,3 +6,6 @@
 - Learn about and implement copy constructor
 - Manually allocate and deallocate memory
 - Optimize
+
+## Tests
+- Implement proper testing (GoogleTest?)
