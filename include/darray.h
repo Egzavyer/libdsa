@@ -39,11 +39,11 @@ public:
     }
 
     void append(const T &element) {
+        size++;
         if (size == capacity) {
             resize(capacity * 2);
         }
-        data[size] = element;
-        size++;
+        data[size - 1] = element;
     }
 
     T pop() {
@@ -61,6 +61,7 @@ public:
 
     void insert(int index, const T &element) {
         if ((index < size || size == 0) && index >= 0) {
+            size++;
             if (size == capacity) {
                 resize(capacity * 2);
             }
@@ -68,7 +69,8 @@ public:
                 data[i + 1] = data[i];
             }
             data[index] = element;
-            size++;
+        } else if (index == size) {
+            append(element);
         } else {
             throw std::out_of_range("insert(): IndexOutOfBounds");
         }
