@@ -86,18 +86,36 @@ TEST_F(DArrayTestSuite, ExceptionSafety) {
             intArray.insert(10,9);
         }catch (const std::out_of_range& e) {
             EXPECT_EQ(intArray.getSize(),3);
+            throw;
         }
     },std::out_of_range);
 }
 
 TEST_F(DArrayTestSuite, PrintMethod) {
     testing::internal::CaptureStdout();
-    intArray.print();
+   std::cout << intArray;
     const std::string output = testing::internal::GetCapturedStdout();
 
     EXPECT_TRUE(output.find("Capacity: 4") != std::string::npos);
     EXPECT_TRUE(output.find("Size: 3") != std::string::npos);
     EXPECT_TRUE(output.find("[1,2,3]") != std::string::npos);
 }
+
+TEST_F(DArrayTestSuite, CopyConstructor) {
+    DArray<int> otherDArray(intArray);
+    EXPECT_EQ(otherDArray.getSize(),intArray.getSize());
+    for (size_t i = 0; i < otherDArray.getSize(); ++i) {
+        EXPECT_EQ(otherDArray[i], intArray[i]);
+    }
+}
+
+TEST_F(DArrayTestSuite, AssignmentOperator) {
+    DArray<int> assigned = intArray;
+    EXPECT_EQ(assigned.getSize(), intArray.getSize());
+    for (int i = 0; i < assigned.getSize(); ++i) {
+        EXPECT_EQ(assigned[i], intArray[i]);
+    }
+}
+
 
 

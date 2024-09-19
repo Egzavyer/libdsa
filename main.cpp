@@ -8,11 +8,10 @@ int main()
     arr.append(1);
     arr.append(2);
     arr.append(3);
-    arr.print();
 
     arr.insert(arr.getSize(),4);
-    arr.print();
     arr.insert(1,6);
-    arr.print();
+    arr.insert(10,9);
+    std::cout << arr << '\n';
 
 }

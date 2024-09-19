@@ -18,11 +18,11 @@ public:
         delete[] data;
     }
 
-    int getSize() const {
+    size_t getSize() const {
         return size;
     }
 
-    int getCapacity() const {
+    size_t getCapacity() const {
         return capacity;
     }
 
@@ -78,10 +78,8 @@ public:
 
     void remove(const int index) {
         if (index < size && index >= 0 && size > 0) {
-            for (int i = index; i < size - 1; i++) {
-                T temp = data[i];
+            for (size_t i = index; i < size - 1; ++i) {
                 data[i] = data[i + 1];
-                data[i + 1] = temp;
             }
             size--;
             if (capacity / 2 > size) {
@@ -92,18 +90,49 @@ public:
         }
     }
 
-    void print() {
-        std::cout << "Capacity: " << capacity << '\n';
-        std::cout << "Size: " << size << '\n';
-        std::cout << '[';
-        for (int i = 0; i < size; i++) {
-            if (i == size - 1) {
-                std::cout << data[i];
-            } else {
-                std::cout << data[i] << ',';
+    void clear() {
+        size = 0;
+    }
+
+    void shrinkToFit() {
+        if (size < capacity) {
+            resize(size);
+        }
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const DArray<T>& arr) {
+        os << "Capacity: " << arr.capacity << '\n';
+        os << "Size: " << arr.size << '\n';
+        os << '[';
+        for (size_t i = 0; i < arr.size; i++) {
+            if (i > 0) os << ',';
+            os << arr.data[i];
+        }
+        os << "]\n";
+        return os;
+    }
+
+    DArray(const DArray& other) {
+        capacity = other.getCapacity();
+        size = other.getSize();
+        data = new T[capacity];
+
+        for (size_t i = 0; i < size; ++i) {
+            data[i] = other.data[i];
+        }
+    }
+
+    DArray& operator=(const DArray& other) {
+        if (this != other) {
+            delete[] data;
+            capacity = other.getCapacity();
+            size = other.getSize();
+            data = new T[capacity];
+            for (size_t i = 0; i < size; ++i) {
+                data[i] = other.data[i];
             }
         }
-        std::cout << "]\n";
+        return *this;
     }
 
 private:
@@ -114,7 +143,7 @@ private:
     void resize(const int newCapacity) {
         if (newCapacity > size) {
             T *temp = new T[newCapacity];
-            for (int i = 0; i < size; i++) {
+            for (size_t i = 0; i < size; ++i) {
                 temp[i] = data[i];
             }
             delete[] data;
