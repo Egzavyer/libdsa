@@ -4,14 +4,12 @@
 
 int main()
 {
-    DArray<int> arr;
-    arr.append(1);
-    arr.append(2);
-    arr.append(3);
+    LList<int> l;
+    l.insertEnd(1);
+    l.insertEnd(2);
+    l.insertEnd(3);
+    std::cout << l;
 
-    arr.insert(arr.getSize(),4);
-    arr.insert(1,6);
-    arr.insert(10,9);
-    std::cout << arr << '\n';
-
+    LList<int> l2 = l;
+    std::cout << l2;
 }

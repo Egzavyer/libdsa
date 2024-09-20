@@ -13,18 +13,33 @@ struct Node {
 template<typename T>
 class LList {
     Node<T> *head;
-    int size;
+    Node<T> *tail;
+    size_t size;
 
 public:
     LList() {
         head = nullptr;
+        tail = nullptr;
         size = 0;
+    }
+
+    ~LList() {
+        while (head != nullptr) {
+            const Node<T>* temp = head;
+            head = head->next;
+            delete temp;
+        }
     }
 
     void insertFront(T value) {
         auto *newNode = new Node<T>();
         newNode->val = value;
         newNode->next = head;
+
+        if (head == nullptr) {
+            tail = newNode;
+        }
+
         head = newNode;
         size++;
     }
@@ -35,9 +50,11 @@ public:
         newNode->next = nullptr;
 
         if (head != nullptr) {
-            getLast()->next = newNode;
+            tail->next = newNode;
+            tail = newNode;
         } else {
             head = newNode;
+            tail = newNode;
         }
         size++;
     }
@@ -70,6 +87,9 @@ public:
         Node<T> *temp = head->next;
         delete head;
         head = temp;
+        if (size == 1) {
+            tail = head;
+        }
         size--;
     }
 
@@ -78,13 +98,13 @@ public:
             throw std::runtime_error("deleteEnd(): EmptyList");
 
         Node<T> *temp = getNode(size - 2);
-        Node<T> *lastNode = temp->next;
-        delete lastNode;
-        temp->next = nullptr;
+        delete tail;
+        tail = temp;
+        tail->next = nullptr;
         size--;
     }
 
-    void deleteAt(int index) {
+    void deleteAt(const int index) {
         if (index <= size && index >= 0) {
             if (index == 0) {
                 deleteFront();
@@ -97,7 +117,7 @@ public:
                 size--;
             }
         } else {
-            throw std::out_of_range("insertAt(): IndexOutOfBounds");
+            throw std::out_of_range("deleteAt(): IndexOutOfBounds");
         }
     }
 
@@ -105,16 +125,11 @@ public:
         return head;
     }
 
-    Node<T> *getLast() {
-        Node<T> *curNode = head;
-
-        while (curNode->next != nullptr) {
-            curNode = curNode->next;
-        }
-        return curNode;
+    Node<T> *getTail() {
+        return tail;
     }
 
-    Node<T> *getNode(int index) {
+    Node<T> *getNode(const int index) {
         Node<T> *curNode = head;
         for (int i = 0; i < index; i++) {
             curNode = curNode->next;
@@ -122,19 +137,46 @@ public:
         return curNode;
     }
 
-    int getSize() const {
+    size_t getSize() const {
         return size;
     }
 
-    void print() {
-        Node<T> *curNode = head;
+    friend std::ostream& operator<<(std::ostream& os, const LList<T>& l) {
+        Node<T> *curNode = l.head;
+        os << "Head: " << l.head->val << "\n";
+        os << "Tail: " << l.tail->val << "\n";
         while (curNode != nullptr) {
-            std::cout << curNode->val;
-            if (curNode->next != nullptr)
-                std::cout << " -> ";
+            if (curNode != l.head) os << " -> ";
+            os << curNode->val;
             curNode = curNode->next;
         }
-        std::cout << '\n';
+        os << '\n';
+        return os;
+    }
+
+    LList(const LList& other) : head(nullptr), tail(nullptr), size(0) {
+        for (Node<T>* curr = other.head; curr != nullptr; curr = curr->next) {
+            insertEnd(curr->val);
+        }
+    }
+
+    LList& operator=(const LList& other) {
+        if (this != &other) {
+            while (head != nullptr) {
+                Node<T>* temp = head;
+                head = head->next;
+                delete temp;
+            }
+
+            head = nullptr;
+            tail = nullptr;
+            size = 0;
+
+            for (Node<T>* curr = other.head; curr != nullptr; curr = curr->next) {
+                insertEnd(curr->val);
+            }
+        }
+        return *this;
     }
 };
 
